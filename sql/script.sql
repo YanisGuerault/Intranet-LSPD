@@ -11,6 +11,8 @@ CREATE TABLE compte_lspd (
     PRIMARY KEY (id)
 );
 
+INSERT INTO compte_lspd VALUES (1, 'Tony Sheppard', '7e2feac95dcd7d1df803345e197369af4b156e4e7a95fcb2955bdbbb3a11afd8bb9d35931bf15511370b18143e38b01b903f55c5ecbded4af99934602fcdf38c', 9, 24, 0, 1);
+
 CREATE TABLE log_panel (
     id INTEGER not null AUTO_INCREMENT,
     utilisateur text,
