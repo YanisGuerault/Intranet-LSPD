@@ -1,0 +1,61 @@
+@import "//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css";
+
+table, td, th {  
+    border: 1px solid #ddd;
+    text-align: left;
+}
+  
+table {
+    border-collapse: collapse;
+    width: 75%;
+}
+  
+th, td {
+    padding: 15px;
+}
+
+#myinput {
+    width: 50%;
+    padding: 15px 15px;
+    margin: 15px 0;
+    display: inline-block;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
+}
+
+.mainLoginInput::-webkit-input-placeholder { 
+    font-family: FontAwesome, sans-serif;
+}
+
+.edit {
+    background-color: #0084ff;
+    color: black;
+    cursor: pointer;
+    width: 40%;
+    border-radius: 5px;
+    border: none;
+    padding: 15px 15px;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.2em;
+}
+.edit:hover {
+    background-color: #003c74;
+    color: white;
+}
+
+.del {
+    background-color: #ff0000;
+    color: black;
+    cursor: pointer;
+    width: 40%;
+    border-radius: 5px;
+    border: none;
+    padding: 15px 15px;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.2em;
+}
+.del:hover {
+    background-color: #680000;
+    color: white;
+}

@@ -1,0 +1,78 @@
+body {
+    background-image: url(img/accueil.jpg);
+}
+#container {
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 10%;
+}
+/* Bordered form */
+form {
+    width: 100%;
+    padding: 40px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 30px;
+    font-family: 'Lato', sans-serif;
+}
+#container h1 {
+    width: 80%;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    font-family: 'Lato', sans-serif;
+}
+/* Full-width inputs */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 12px;
+    margin: 12px 0;
+    display: inline-block;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
+}
+/* Set a style for all buttons */
+input[type=submit] {
+    background-color: #53af57;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-family: 'Lato', sans-serif;
+}
+input[type=submit]:hover {
+    background-color: white;
+    color: #53af57;
+    border: 1px solid #ddd;
+    font-family: 'Lato', sans-serif;
+}
+
+p {
+    color:red;
+}
+
+.input-container {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+}
+  
+.icon {
+    background: #53af57;
+    color: white;
+    min-width: 40px;
+    text-align: center;
+    padding: 10px 10px;
+    margin: 12px 0;
+    display: inline-block;
+    border: 1px solid #ddd;
+}
+  
+.input-field {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+}
