@@ -1,15 +1,22 @@
 <?php include 'menu.php'; ?>
 <?php  if ($monniveau < '2') { header("Location: index.php"); } ?>
 
-<?php 
+<?php
 
-$nom_crim = $_REQUEST['nom_crim'];
+$id = $_REQUEST['id'];
 
-$query = "SELECT * FROM casier WHERE nom_crim = '$nom_crim' " ; 
+$query = "SELECT * FROM casier WHERE id = '$id' " ;
 $result = mysqli_query($con, $query);
 $row = mysqli_fetch_assoc($result);
 
-$query1 = "SELECT * FROM infraction WHERE nom_crim = '$nom_crim' ORDER BY id DESC" ; 
+$idu = $row["utilisateur"];
+$query2 = "SELECT * FROM compte_lspd WHERE id = '$idu' " ;
+$result2 = mysqli_query($con, $query2);
+$row2 = mysqli_fetch_assoc($result2);
+
+$nom_crim = $row['nom_crim'];
+
+$query1 = "SELECT * FROM infraction WHERE casier = '$id' ORDER BY id DESC" ;
 $resultat = $con->query($query1);
 
 ?>
@@ -17,8 +24,8 @@ $resultat = $con->query($query1);
 if( isset( $_POST['add_infraction'] ) ) {
     if(isset($_POST['infraction']))      $infraction=addslashes($_POST['infraction']);
     else      $infraction='';
-    $sql = mysqli_query ($con, "INSERT INTO infraction (nom_crim, quand, utilisateur, matri, grade, infra)  VALUES('$nom_crim','$now','$jesuis','$monmatricule','$level','$infraction')" ); 
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A ajouter une infraction a ($nom_crim) !', '$now')" );
+    $sql = mysqli_query ($con, "INSERT INTO infraction (casier, utilisateur, quand, infra)  VALUES('$id','$moi','$now','$infraction')" );
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A ajouter une infraction a ($nom_crim) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
@@ -27,16 +34,16 @@ if( isset( $_POST['add_infraction'] ) ) {
 if( isset( $_POST['delete_infration'] ) ) { 
     $id_infration = $_POST['id_infration'];
     $delete_permis = mysqli_query($con, "DELETE FROM infraction WHERE id = $id_infration ");
-    $delete_permis_log = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', ' A supprimer une infraction a ($nom_crim) !', '$now')" );
+    $delete_permis_log = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', ' A supprimer une infraction a ($nom_crim) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
 ?>
 <?php 
 if( isset( $_POST['delete_casier'] ) ) { 
-    $delete_from_casier = mysqli_query($con, "DELETE FROM casier WHERE nom_crim = '$nom_crim' ");
-    $delete_from_infraction = mysqli_query($con, "DELETE FROM infraction WHERE nom_crim = '$nom_crim' ");
-    $delete_casier_log = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', ' A supprimer le casier de ($nom_crim) !', '$now')" );
+    $delete_from_casier = mysqli_query($con, "DELETE FROM casier WHERE id = '$id' ");
+    $delete_from_infraction = mysqli_query($con, "DELETE FROM infraction WHERE casier = '$id' ");
+    $delete_casier_log = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', ' A supprimer le casier de ($nom_crim) !', '$now')" );
     header('Location: gst_casier.php');
     mysql_close();
 }
@@ -44,9 +51,9 @@ if( isset( $_POST['delete_casier'] ) ) {
 <?php
 if(isset($_POST['maj_casier'])) {
     $piece_id = addslashes($_POST['piece_id']);
-    $maj_casier =  mysqli_query($con, "UPDATE casier SET piece_id = '$piece_id' WHERE nom_crim = '$nom_crim' ");
-    $maj_casier_log =  mysqli_query($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A mit a jour le casier de ($nom_crim)', '$now')" );
-    header("Refresh: $delay;"); 
+    $maj_casier =  mysqli_query($con, "UPDATE casier SET piece_id = '$piece_id' WHERE id = '$id' ");
+    $maj_casier_log =  mysqli_query($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A mit a jour le casier de ($nom_crim)', '$now')" );
+    header("Refresh: $delay;");
     mysql_close();
 }
 ?>
@@ -74,9 +81,9 @@ if(isset($_POST['maj_casier'])) {
                 <li class="header">Créateur Casier</li>
                 <li>
                     <h2 style="text-align:left; font-size: 15px;">Casier : <?php echo $row['id'];?></h2>
-                    <h2 style="text-align:left; font-size: 15px;">Créateur : <?php echo $row['utilisateur'];?></h2>
-                    <h2 style="text-align:left; font-size: 15px;">Grade : <?php echo $row['grade'];?></h2>
-                    <h2 style="text-align:left; font-size: 15px;">Matricule : <?php echo $row['matri'];?></h2>
+                    <h2 style="text-align:left; font-size: 15px;">Créateur : <?php echo $row2['utilisateur'];?></h2>
+                    <h2 style="text-align:left; font-size: 15px;">Grade : <?php echo $row2['grade'];?></h2>
+                    <h2 style="text-align:left; font-size: 15px;">Matricule : <?php echo $row2['matricule'];?></h2>
                     <h2 style="text-align:left; font-size: 15px;">Date de création : <?php echo $row['quand'];?></h2>
                     <h2 style="text-align:left; font-size: 15px;">Lieu de création : <?php echo $row['lieu'];?></h2>
                 </li>
@@ -122,13 +129,20 @@ if(isset($_POST['maj_casier'])) {
                                 </td>
                                 <?php endif; ?>
                             </tr>
-                            <?php while($data = mysqli_fetch_array($resultat)) :?>
+                            <?php while($data = mysqli_fetch_array($resultat)) :
+
+                                $idutil = $data['utilisateur'];
+                                $query2 = "SELECT * FROM compte_lspd WHERE id = '$idutil' limit 1" ;
+                                $resultat2 = $con->query($query2);
+                                $data2 = mysqli_fetch_array($resultat2);
+
+                                ?>
                             <tr>
                                 <td>
-                                    <center><?php echo $data['quand'];?></center>
+                                    <center><?php echo $data['quand']; ?></center>
                                 </td>
                                 <td>
-                                    <center><?php echo $data['grade'];?> - <?php echo $data['utilisateur'];?> (<?php echo $data['matri'];?>)</center>
+                                    <center><?php echo $data2['grade'];?> - <?php echo $data2['utilisateur'];?> (<?php echo $data2['matricule'];?>)</center>
                                 </td>
                                 <td>
                                     <center><?php echo $data['infra'];?></center>

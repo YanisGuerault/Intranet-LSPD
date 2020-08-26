@@ -48,8 +48,8 @@ if( isset( $_POST['add_plainte'] ) ) {
     else      $preuve='';
     
     $sql = mysqli_query ($con, 
-    "INSERT INTO plainte (quand, lieu, utilisateur, matri, grade, victime, tel_victime, suspect, tel_suspect, des_info_suspect, vers_victime, vers_suspect, preuve, etat, signa) 
-    VALUES('$now','$lieu','$jesuis','$monmatricule','$level','$victime','$tel_victime','$suspect','$tel_suspect','$des_info_suspect', '$vers_victime','','$preuve','1','$victime & $jesuis')" ); 
+    "INSERT INTO plainte (quand, lieu, utilisateur, victime, tel_victime, suspect, tel_suspect, des_info_suspect, vers_victime, vers_suspect, preuve, etat, signa) 
+    VALUES('$now','$lieu','$moi','$victime','$tel_victime','$suspect','$tel_suspect','$des_info_suspect', '$vers_victime','','$preuve','1','$victime & $jesuis')" );
     $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A ajouter une Plainte !', '$now')" );
     $message = "<h3><p>La plainte à bien été ajouter !</p></h3>";
     header("Refresh: $delay;"); 
@@ -169,16 +169,23 @@ window.onclick = function(event) {
                 </th>
             </tr>
         </thead>
-        <?php while( $row = mysqli_fetch_array($resultat) ) :?>
+        <?php while( $row = mysqli_fetch_array($resultat) ) :
+
+            $idutil = $row['utilisateur'];
+            $query2 = "SELECT * FROM compte_lspd WHERE id = '$idutil' limit 1" ;
+            $resultat2 = $con->query($query2);
+            $row2 = mysqli_fetch_array($resultat2);
+            ?>
+
             <tbody id="myTable">
                     <td>
                         <?php echo $row['id'];?>
                     </td>
                     <td>
-                        <?php echo $row['utilisateur'];?>
+                        <?php echo $row2['utilisateur'];?>
                     </td>
                     <td>
-                        <?php echo $row['matri'];?>
+                        <?php echo $row2['matricule'];?>
                     </td>
                     <td>
                         <?php echo $row['victime'];?>

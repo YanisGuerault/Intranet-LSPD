@@ -63,8 +63,8 @@ if( isset( $_POST['add_rapport'] ) ) {
     else      $preuve='';
 
     $sql = mysqli_query ($con, 
-    "INSERT INTO rapport (quand, lieu, utilisateur, matri, grade, nom_crim, maison_crim, qst_1, rep_1, qst_2, rep_2, qst_3, rep_3, qst_4, rep_4, qst_5, rep_5, rap_situ, preuve, etat, signa) 
-    VALUES('$now','$lieu','$jesuis','$monmatricule','$level','$nom_crim','$maison_crim','$qst_1','$rep_1','$qst_2','$rep_2','$qst_3','$rep_3','$qst_4','$rep_4','$qst_5','$rep_5','$rap_situ','$preuve','1','$level - $jesuis')" ); 
+    "INSERT INTO rapport (quand, lieu, utilisateur, nom_crim, maison_crim, qst_1, rep_1, qst_2, rep_2, qst_3, rep_3, qst_4, rep_4, qst_5, rep_5, rap_situ, preuve, etat, signa) 
+    VALUES('$now','$lieu','$moi','$nom_crim','$maison_crim','$qst_1','$rep_1','$qst_2','$rep_2','$qst_3','$rep_3','$qst_4','$rep_4','$qst_5','$rep_5','$rap_situ','$preuve','1','$level - $jesuis')" );
     $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A ajouter un Rapport !', '$now')" );
     $message = "<h3><p>Le rapport à bien été ajouter !</p></h3>";
     header("Refresh: $delay;"); 
@@ -209,16 +209,23 @@ window.onclick = function(event) {
                 </th>
             </tr>
         </thead>
-        <?php while( $row = mysqli_fetch_array($resultat) ) :?>
+        <?php while( $row = mysqli_fetch_array($resultat) ) :
+
+            $idutil = $row['utilisateur'];
+            $query2 = "SELECT * FROM compte_lspd WHERE id = '$idutil' limit 1" ;
+            $resultat2 = $con->query($query2);
+            $row2 = mysqli_fetch_array($resultat2);
+
+            ?>
             <tbody id="myTable">
                     <td>
                         <?php echo $row['id'];?>
                     </td>
                     <td>
-                        <?php echo $row['utilisateur'];?>
+                        <?php echo $row2['utilisateur'];?>
                     </td>
                     <td>
-                        <?php echo $row['matri'];?>
+                        <?php echo $row2['matricule'];?>
                     </td>
                     <td>
                         <?php echo $row['nom_crim'];?>

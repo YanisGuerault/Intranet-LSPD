@@ -8,6 +8,10 @@ $query = "SELECT * FROM plainte WHERE id = $id " ;
 $result = mysqli_query($con, $query);
 $row = mysqli_fetch_assoc($result);
 
+$query = "SELECT * FROM plainte WHERE id = $id " ;
+$result = mysqli_query($con, $query);
+$row = mysqli_fetch_assoc($result);
+
 ?>
 
 <?php

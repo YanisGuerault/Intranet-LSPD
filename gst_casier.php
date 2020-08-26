@@ -44,7 +44,7 @@ if( isset( $_POST['add_cassier'] ) ) {
     if(isset($_POST['piece_id']))      $piece_id=addslashes($_POST['piece_id']);
     else      $piece_id='';
 
-    $sql = mysqli_query ($con, "INSERT INTO casier (quand, utilisateur, matri, grade, lieu, nom_crim, date_de_naissance, sexe, taille, piece_id)  VALUES('$now','$jesuis','$monmatricule','$level','$lieu','$nom_crim','$date_de_naissance','$sexe','$taille','$piece_id')" ); 
+    $sql = mysqli_query ($con, "INSERT INTO casier (quand, utilisateur, lieu, nom_crim, date_de_naissance, sexe, taille, piece_id)  VALUES('$now','$moi','$lieu','$nom_crim','$date_de_naissance','$sexe','$taille','$piece_id')" );
     $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A ajouter un casier a ($nom_crim) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
@@ -155,7 +155,7 @@ window.onclick = function(event) {
                     </td>
                     <td>
                         <center>
-                            <a href="casier.php?nom_crim=<?php echo $row['nom_crim']; ?>" class='edit'><i class="fas fa-eye"></i></a>
+                            <a href="casier.php?id=<?php echo $row['id']; ?>" class='edit'><i class="fas fa-eye"></i></a>
                         </center>
                     </td>
                 </tr>
