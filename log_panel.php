@@ -1,5 +1,5 @@
 <?php include 'menu.php'; ?>
-<?php if ($jesuisrh == '0' && $jesuisadmin == '0') { header("Location: index.php"); } ?>
+<?php if ($jesuisrh == '0' && $jesuisadmin == '0' && $jesuissuperadmin == '0')  { header("Location: index.php"); } ?>
 
 <?php $resultat = mysqli_query($con, "SELECT * FROM log_panel ORDER BY id DESC"); ?>
 

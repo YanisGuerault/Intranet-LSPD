@@ -24,6 +24,7 @@ if (count($_POST) > 0)
         $_SESSION['matricule'] = $row['matricule'];
         $_SESSION['rh'] = $row['rh'];
         $_SESSION['isadmin'] = $row['isadmin'];
+        $_SESSION['issuperadmin'] = $row['issuperadmin'];
     }
     else {
         $message = "<center><p>Identifiant Incorrect !</p></center>";

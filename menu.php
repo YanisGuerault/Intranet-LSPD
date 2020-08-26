@@ -13,20 +13,43 @@
 
 <body>
 	<header id="header">
+		<!----------si tout les acces --------------->
 
-		<?php if ($jesuisrh == '1' && $jesuisadmin == '1' && $monniveau >= '2') { ?>
+		<?php if ($jesuisrh == '1' && $jesuisadmin == '1' && $jesuissuperadmin == '1' && $monniveau >= '2') { ?>
 			<nav class="links" style="--items: 9;">
 		<?php } ?>
-		<?php if ($jesuisrh == '0' && $jesuisadmin == '1' && $monniveau >= '2') { ?>
+
+		<!----------si deux acces --------------->
+
+		<?php if ($jesuisrh == '1'  && $jesuisadmin == '1' && $jesuissuperadmin == '0' && $monniveau >= '2') { ?>
 			<nav class="links" style="--items: 9;">
 		<?php } ?>
-		<?php if ($jesuisrh == '1' && $jesuisadmin == '0' && $monniveau >= '2') { ?>
+		<?php if ($jesuisrh == '1'  && $jesuisadmin == '0' && $jesuissuperadmin == '1' && $monniveau >= '2') { ?>
 			<nav class="links" style="--items: 9;">
 		<?php } ?>
-		<?php if ($jesuisrh == '0' && $jesuisadmin == '0' && $monniveau >= '2') { ?>
+		<?php if ($jesuisrh == '0'  && $jesuisadmin == '1' && $jesuissuperadmin == '1' && $monniveau >= '2') { ?>
+			<nav class="links" style="--items: 9;">
+		<?php } ?>
+
+
+		<!----------si seulement un acces --------------->
+
+		<?php if ($jesuisrh == '0' && $jesuisadmin == '0' && $jesuissuperadmin == '1' && $monniveau >= '2') { ?>
+			<nav class="links" style="--items: 9;">
+		<?php } ?>
+		<?php if ($jesuisrh == '1' && $jesuisadmin == '0' && $jesuissuperadmin == '0' && $monniveau >= '2') { ?>
+			<nav class="links" style="--items: 9;">
+		<?php } ?>
+		<?php if ($jesuisrh == '0' && $jesuisadmin == '1' && $jesuissuperadmin == '0' && $monniveau >= '2') { ?>
+			<nav class="links" style="--items: 9;">
+		<?php } ?>
+
+		<!----------si simple utilisateur ---------------->
+
+		<?php if ($jesuisrh == '0' && $jesuisadmin == '0' && $jesuissuperadmin == '0' && $monniveau >= '2') { ?>
 			<nav class="links" style="--items: 7;">
 		<?php } ?>
-		<?php if ($jesuisrh == '0' && $jesuisadmin == '0' && $monniveau == '1') { ?>
+		<?php if ($jesuisrh == '0' && $jesuisadmin == '0' && $jesuissuperadmin == '0' && $monniveau == '1') { ?>
 			<nav class="links" style="--items: 3;">
 		<?php } ?>
 
@@ -39,7 +62,7 @@
 			<a href="gst_avis_de_recherche.php"><i class="fas fa-thumbtack"></i> Personnes Recherché</a>
 		<?php endif; ?>
 
-		<?php if ($jesuisrh == '1' OR $jesuisadmin == '1' ) : ?>
+		<?php if ($jesuisrh == '1' OR $jesuisadmin == '1' OR $jesuissuperadmin == '1') : ?>
 			<a href="log_panel.php"><i class="fas fa-history"></i> Log Panel</a>
 			<a href="gst_users.php"><i class="fas fa-users-cog"></i></i> Gestion Compte</a>
 		<?php endif; ?>

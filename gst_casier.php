@@ -68,7 +68,6 @@ if( isset( $_POST['add_cassier'] ) ) {
             <span class="close">&times;</span>
             <form method="POST">
                 <h1>Ajouter un casier judiciaire</h1>
-                <?php if($message!="") { echo $message; } ?><br>
         
                 <div class="input-container">
                     <i class="far fa-calendar-alt icon" style="font-size: 18;"></i>

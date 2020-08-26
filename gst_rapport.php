@@ -100,7 +100,6 @@ if( isset( $_POST['delete_rapport'] ) ) {
             <span class="close">&times;</span>
             <form method="POST">
                 <h1>Ajouter un Rapport</h1>
-                <?php if($message!="") { echo $message; } ?><br>
 
                 <div class="input-container">
                     <i class="far fa-calendar-alt icon" style="font-size: 18;"></i>
@@ -242,7 +241,7 @@ window.onclick = function(event) {
                         <center>
                         <form method='POST'>
                             <a href="rapport.php?id=<?php echo $row['id']; ?>" class='edit'><i class="fas fa-eye"></i></a>
-                            <?php if ($jesuisadmin == '1') :?>
+                            <?php if ($jesuisadmin == '1' OR $jesuissuperadmin == '1') :?>
                             <button type='submit' value='delete_rapport' name='delete_rapport' class='del'>
                                 <input type='hidden' name='id_rapport' value=<?php echo $row['id']; ?>>
                                 <i class='fas fa-trash-alt'></i>

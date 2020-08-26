@@ -1,5 +1,5 @@
 <?php include 'menu.php'; ?>
-<?php if ($jesuisrh == '0' && $jesuisadmin == '0') { header("Location: index.php"); } ?>
+<?php if ($jesuisrh == '0' && $jesuisadmin == '0' && $jesuissuperadmin == '0') { header("Location: index.php"); } ?>
 
 <html lang="fr">
 <head>
@@ -17,14 +17,29 @@ if( isset( $_POST['add_user'] ) ) {
     if(isset($_POST['matricule']))      $matricule=$_POST['matricule'];
     else      $matricule='';
     $motdepasse = hash('sha512', $_POST['motdepasse']);
-    $sql = mysqli_query ($con, "INSERT INTO compte_lspd (utilisateur, motdepasse, grade, matricule, rh, isadmin) VALUES('$utilisateur','$motdepasse','1','$matricule','0','0')" ); 
+    $sql = mysqli_query ($con, "INSERT INTO compte_lspd (utilisateur, motdepasse, grade, matricule, rh, isadmin, issuperadmin) VALUES('$utilisateur','$motdepasse','1','$matricule','0','0','0')" ); 
     $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A ajouter a la LSPD ($utilisateur) !', '$now')" );
-    $message = "<h3><p>L'utilisateur à bien été ajouter !</p></h3>";
     header("Refresh: $delay;"); 
     mysql_close();
 }
 ?>
 <?php
+if( isset( $_POST['addadmin'] ) ) {
+    $id = $_POST['id'];
+    $utilisateur = $_POST['utilisateur'];
+    $sql = mysqli_query($con, "UPDATE compte_lspd SET isadmin = '1' WHERE id = $id ");
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A ajouter au admin ($utilisateur) !', '$now')" );
+    header("Refresh: $delay;"); 
+    mysql_close();
+}
+if( isset( $_POST['deladmin'] ) ) {
+    $id = $_POST['id'];
+    $utilisateur = $_POST['utilisateur'];
+    $sql = mysqli_query($con, "UPDATE compte_lspd SET isadmin = '0' WHERE id = $id ");
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A retirer des admin ($utilisateur) !', '$now')" );
+    header("Refresh: $delay;"); 
+    mysql_close();
+}
 if( isset( $_POST['addrh'] ) ) {
     $id = $_POST['id'];
     $utilisateur = $_POST['utilisateur'];
@@ -112,7 +127,6 @@ function show_mdp() {
                 <br><br>
                 <form method="POST">
                     <h1>Ajouter un utilisateurs</h1>
-                    <?php if($message!="") { echo $message; } ?><br>
         
                     <div class="input-container">
                         <i class="fas fa-user-alt icon" style="font-size: 18;"></i>
@@ -169,7 +183,7 @@ function show_mdp() {
                 <td>
                     <center><b><i class="fas fa-id-badge"></i> | Matricule</b></center>
                 </td>
-                <?php if ($jesuisadmin == '1') : ?>
+                <?php if ($jesuisadmin == '1' OR $jesuissuperadmin == '1') : ?>
                 <td>
                     <center><b><i class="fas fa-crown"></i> | Ressource Humaine</b></center>
                 </td>
@@ -186,6 +200,9 @@ function show_mdp() {
                             <center>
                                 <?php if ($row['isadmin'] == '1') : ?> 
                                 <i class="fas fa-star" style="color: orange"></i>  
+                                <?php endif;?>
+                                <?php if ($row['issuperadmin'] == '1' && $row['isadmin'] == '0') : ?> 
+                                <i class="fas fa-crown" style="color: orange"></i>  
                                 <?php endif;?>
                                 <?php echo $row['utilisateur']; ?>
                             </center>
@@ -282,8 +299,9 @@ function show_mdp() {
 
                         <!--------------------------------->
 
-                        <?php if ($jesuisadmin == '1') : ?>
-                        <?php if ($row['rh'] == '0') : ?>
+                        <?php if ($jesuissuperadmin == '1') : ?>
+                        <!-----------si pas admin et pas RH ---------------->
+                        <?php if ($row['rh'] == '0' && $row['isadmin'] == '0') : ?>
                         <td>
                             <center>
                                 <form method='POST'>
@@ -297,11 +315,17 @@ function show_mdp() {
                                         <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
                                         <i class="fas fa-key"></i>
                                     </button>
+                                    <button type='submit' value='addadmin' name='addadmin' class='upgrade'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-star"></i>
+                                    </button>
                                 </form>
                             <center>
                         </td>
                         <?php endif; ?>
-                        <?php if ($row['rh'] == '1') : ?>
+                        <!-----------si pas admin et RH ---------------->
+                        <?php if ($row['rh'] == '1' && $row['isadmin'] == '0') : ?>
                         <td>
                             <center>
                                 <form method='POST'>
@@ -315,6 +339,190 @@ function show_mdp() {
                                         <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
                                         <i class="fas fa-key"></i>
                                     </button>
+                                    <button type='submit' value='addadmin' name='addadmin' class='upgrade'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                </form>
+                            <center>
+                        </td>
+                        <?php endif; ?>
+
+                        <!-----------si admin et pas RH ---------------->
+
+                        <?php if ($row['isadmin'] == '1' && $row['rh'] == '0') : ?>
+                        <td>
+                            <center>
+                                <form method='POST'>
+                                    <button type='submit' value='addrh' name='addrh' class='upgrade'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button type='submit' value='rst_pass' name='rst_pass' class='rst_pass'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-key"></i>
+                                    </button>
+                                    <button type='submit' value='deladmin' name='deladmin' class='delete'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                </form>
+                            <center>
+                        </td>
+                        <?php endif; ?>
+
+                        <!-----------si admin et RH ---------------->
+
+                        <?php if ($row['rh'] == '1' && $row['isadmin'] == '1') : ?>
+                        <td>
+                            <center>
+                                <form method='POST'>
+                                    <button type='submit' value='delrh' name='delrh' class='delete'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <button type='submit' value='rst_pass' name='rst_pass' class='rst_pass'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-key"></i>
+                                    </button>
+                                    <button type='submit' value='deladmin' name='deladmin' class='delete'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                </form>
+                            <center>
+                        </td>
+                        <?php endif; ?>
+                        <?php endif; ?>
+                        <!-------------------------------------------------------------------------------------------------------------------->
+                        <?php if ($jesuisadmin == '1') : ?>
+                        <!-----------si pas admin et pas RH ---------------->
+                        <?php if ($row['rh'] == '0' && $row['isadmin'] == '0') : ?>
+                        <td>
+                            <center>
+                                <form method='POST'>
+                                    <?php if ($row['issuperadmin'] == '0') : ?>
+                                    <button type='submit' value='addrh' name='addrh' class='upgrade'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <?php if ($row['isadmin'] == '0') : ?>
+                                    <button type='submit' value='rst_pass' name='rst_pass' class='rst_pass'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-key"></i>
+                                    </button>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($jesuissuperadmin == '1') : ?>
+                                    <button type='submit' value='addadmin' name='addadmin' class='upgrade'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <?php endif; ?>
+                                </form>
+                            <center>
+                        </td>
+                        <?php endif; ?>
+                        <!-----------si pas admin et RH ---------------->
+                        <?php if ($row['rh'] == '1' && $row['isadmin'] == '0') : ?>
+                        <td>
+                            <center>
+                                <form method='POST'>
+                                    <?php if ($row['issuperadmin'] == '0') : ?>
+                                    <button type='submit' value='delrh' name='delrh' class='delete'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <?php if ($row['isadmin'] == '0') : ?>
+                                    <button type='submit' value='rst_pass' name='rst_pass' class='rst_pass'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-key"></i>
+                                    </button>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($jesuissuperadmin == '1') : ?>
+                                    <button type='submit' value='addadmin' name='addadmin' class='upgrade'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <?php endif; ?>
+                                </form>
+                            <center>
+                        </td>
+                        <?php endif; ?>
+
+                        <!-----------si admin et pas RH ---------------->
+
+                        <?php if ($row['isadmin'] == '1' && $row['rh'] == '0') : ?>
+                        <td>
+                            <center>
+                                <form method='POST'>
+                                    <?php if ($row['issuperadmin'] == '0') : ?>
+                                    <button type='submit' value='addrh' name='addrh' class='upgrade'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <?php if ($row['isadmin'] == '0') : ?>
+                                    <button type='submit' value='rst_pass' name='rst_pass' class='rst_pass'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-key"></i>
+                                    </button>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($jesuissuperadmin == '1') : ?>
+                                    <button type='submit' value='deladmin' name='deladmin' class='delete'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <?php endif; ?>
+                                </form>
+                            <center>
+                        </td>
+                        <?php endif; ?>
+
+                        <!-----------si admin et RH ---------------->
+
+                        <?php if ($row['rh'] == '1' && $row['isadmin'] == '1') : ?>
+                        <td>
+                            <center>
+                                <form method='POST'>
+                                    <?php if ($row['issuperadmin'] == '0') : ?>
+                                    <button type='submit' value='delrh' name='delrh' class='delete'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <?php if ($row['isadmin'] == '0') : ?>
+                                    <button type='submit' value='rst_pass' name='rst_pass' class='rst_pass'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-key"></i>
+                                    </button>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($jesuissuperadmin == '1') : ?>
+                                    <button type='submit' value='deladmin' name='deladmin' class='delete'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <?php endif; ?>
                                 </form>
                             <center>
                         </td>
@@ -325,9 +533,12 @@ function show_mdp() {
 
                         <td>
                             <center>
-                            <?php if ($row['isadmin'] == '0' OR $jesuisadmin == '1') : ?>
+
+                                <!-----------si superadmin ----------------->
+
+                                <?php if ($jesuissuperadmin == '1') : ?>
                                 <form method='POST'>
-                                <?php if (($row['grade'] + 1 < $monniveau OR $jesuisadmin == '1') && $row['grade'] < '14') : ?>
+                                <?php if ($row['grade'] < '15') : ?>
                                     <button type='submit' value='upgrade' name='upgrade' class='upgrade'>
                                         <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
                                         <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
@@ -335,6 +546,37 @@ function show_mdp() {
                                         <i class='fas fa-long-arrow-alt-up'></i>
                                     </button>
                                     <?php endif; ?>
+                                    <?php if  ($row['grade'] > '0') : ?>
+                                    <button type='submit' value='downgrade' name='downgrade' class='downgrade'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <input type='hidden' name='grade' value=<?php echo $row['grade']; ?>>
+                                        <i class='fas fa-long-arrow-alt-down'></i>
+                                    </button>
+                                    <?php endif; ?>
+                                    <button type='submit' value='delete' name='delete' class='delete'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <i class='fas fa-trash-alt'></i>
+                                    </button>
+                                </form>
+                                <?php endif; ?>
+
+                                <!-----------si admin et RH ---------------->
+
+                                <?php if ($jesuisadmin == '1' && $jesuisrh == '1') : ?>
+                                <form method='POST'>
+                                    <?php if ($row['issuperadmin'] == '0') : ?>
+                                    <?php if (($row['grade'] + 1 < $monniveau OR $jesuisadmin == '1') && $row['grade'] < '14') : ?>
+                                    <button type='submit' value='upgrade' name='upgrade' class='upgrade'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <input type='hidden' name='grade' value=<?php echo $row['grade']; ?>>
+                                        <i class='fas fa-long-arrow-alt-up'></i>
+                                    </button>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($row['issuperadmin'] == '0') : ?>
                                     <?php if (($row['grade'] < $monniveau OR $jesuisadmin == '1') && $row['grade'] > '0') : ?>
                                     <button type='submit' value='downgrade' name='downgrade' class='downgrade'>
                                         <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
@@ -343,6 +585,9 @@ function show_mdp() {
                                         <i class='fas fa-long-arrow-alt-down'></i>
                                     </button>
                                     <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($row['issuperadmin'] == '0') : ?>
+                                    <?php if ($row['isadmin'] == '0') : ?>
                                     <?php if ($row['grade'] < $monniveau OR $jesuisadmin == '1') : ?>
                                         <button type='submit' value='delete' name='delete' class='delete'>
                                             <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
@@ -350,8 +595,88 @@ function show_mdp() {
                                             <i class='fas fa-trash-alt'></i>
                                         </button>
                                     <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
                                 </form>
                                 <?php endif; ?>
+
+                                <!-----------si admin et pas RH ---------------->
+
+                                <?php if ($jesuisadmin == '1' && $jesuisrh == '0') : ?>
+                                <form method='POST'>
+                                    <?php if ($row['issuperadmin'] == '0') : ?>
+                                    <?php if (($row['grade'] + 1 < $monniveau OR $jesuisadmin == '1') && $row['grade'] < '14') : ?>
+                                    <button type='submit' value='upgrade' name='upgrade' class='upgrade'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <input type='hidden' name='grade' value=<?php echo $row['grade']; ?>>
+                                        <i class='fas fa-long-arrow-alt-up'></i>
+                                    </button>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($row['issuperadmin'] == '0') : ?>
+                                    <?php if (($row['grade'] < $monniveau OR $jesuisadmin == '1') && $row['grade'] > '0') : ?>
+                                    <button type='submit' value='downgrade' name='downgrade' class='downgrade'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <input type='hidden' name='grade' value=<?php echo $row['grade']; ?>>
+                                        <i class='fas fa-long-arrow-alt-down'></i>
+                                    </button>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($row['issuperadmin'] == '0') : ?>
+                                    <?php if ($row['isadmin'] == '0') : ?>
+                                    <?php if ($row['grade'] < $monniveau OR $jesuisadmin == '1') : ?>
+                                        <button type='submit' value='delete' name='delete' class='delete'>
+                                            <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                            <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                            <i class='fas fa-trash-alt'></i>
+                                        </button>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+                                </form>
+                                <?php endif; ?>
+
+                                 <!-----------si RH et pas admin ---------------->
+
+                                <?php if ($jesuisadmin == '0' && $jesuisrh == '1') : ?>
+                                <form method='POST'>
+                                    <?php if ($row['issuperadmin'] == '0') : ?>
+                                    <?php if (($row['grade'] + 1 < $monniveau ) && $row['grade'] < '14') : ?>
+                                    <button type='submit' value='upgrade' name='upgrade' class='upgrade'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <input type='hidden' name='grade' value=<?php echo $row['grade']; ?>>
+                                        <i class='fas fa-long-arrow-alt-up'></i>
+                                    </button>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($row['issuperadmin'] == '0') : ?>
+                                    <?php if (($row['grade'] < $monniveau) && $row['grade'] > '0') : ?>
+                                    <button type='submit' value='downgrade' name='downgrade' class='downgrade'>
+                                        <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                        <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                        <input type='hidden' name='grade' value=<?php echo $row['grade']; ?>>
+                                        <i class='fas fa-long-arrow-alt-down'></i>
+                                    </button>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if ($row['issuperadmin'] == '0') : ?>
+                                    <?php if ($row['isadmin'] == '0') : ?>
+                                    <?php if ($row['grade'] < $monniveau) : ?>
+                                        <button type='submit' value='delete' name='delete' class='delete'>
+                                            <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
+                                            <input type='hidden' name='utilisateur' value=<?php echo $row['utilisateur']; ?>>
+                                            <i class='fas fa-trash-alt'></i>
+                                        </button>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+                                    <!------------------------------------------------------------------------------------------------------>
+                                </form>
+                                <?php endif; ?>
+
                             </center>
                         </td>
                     </tr>

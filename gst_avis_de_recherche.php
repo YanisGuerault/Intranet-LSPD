@@ -38,7 +38,7 @@ if( isset( $_POST['add_avis'] ) ) {
     if(isset($_POST['pourquoi']))      $pourquoi=addslashes($_POST['pourquoi']);
     else      $pourquoi='';
 
-    $sql = mysqli_query ($con, "INSERT INTO avis_de_recherche (quand, utilisateur, nom_crim, sexe, pourquoi)  VALUES('$now','$moi','$nom_crim','$sexe','$pourquoi')" );
+    $sql = mysqli_query ($con, "INSERT INTO avis_de_recherche (quand, utilisateur, matri, grade, nom_crim, sexe, pourquoi)  VALUES('$now','$jesuis','$monmatricule','$level','$nom_crim','$sexe','$pourquoi')" ); 
     $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A ajouter ($nom_crim) a la liste des personnes rechercher !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
@@ -147,14 +147,7 @@ window.onclick = function(event) {
                 </th>
             </tr>
         </thead>
-        <?php while( $row = mysqli_fetch_array($resultat) ) :
-
-            $idutil = $row['utilisateur'];
-            $query2 = "SELECT * FROM compte_lspd WHERE id = '$idutil' limit 1" ;
-            $resultat2 = $con->query($query2);
-            $row2 = mysqli_fetch_array($resultat2);
-
-            ?>
+        <?php while( $row = mysqli_fetch_array($resultat) ) :?>
             <tbody id="myTable">
                     <td>
                         <center>
@@ -162,10 +155,10 @@ window.onclick = function(event) {
                         </center>
                     </td>
                     <td>
-                        <?php echo $row2['utilisateur'];?>
+                        <?php echo $row['utilisateur'];?>
                     </td>
                     <td>
-                        <?php echo $row2['matricule'];?>
+                        <?php echo $row['matri'];?>
                     </td>
                     <td>
                         <?php echo $row['nom_crim'];?>
@@ -176,11 +169,11 @@ window.onclick = function(event) {
                     <td>
                         <center>
                             <form method = "POST">
-                                <?php if ($moi == $row['utilisateur'] OR $jesuisadmin == '1' OR $jesuisrh == '1') :?>
+                                <?php if ($moi == $row['utilisateur'] OR $jesuisadmin == '1' OR $jesuissuperadmin == '1' OR $jesuisrh == '1') :?>
                                 <button type='submit' value='delete' name='delete' class='delete'>
                                     <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
                                     <input type='hidden' name='nom_crim' value=<?php echo $row['nom_crim']; ?>>
-                                    <i class='fa fa-trash-alt'></i>
+                                    <i class='fas fa-trash-alt'></i>
                                 </button>
                                 <?php endif;?>
                             </form>

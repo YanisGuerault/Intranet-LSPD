@@ -56,7 +56,7 @@ if(isset($_POST['jeteup'])) {
     <br><br><br><br><br><br>
     <h2 style="text-align:center; font-size: 40px;">Plainte - <?php echo $row['id'];?></h2>
     <form name="form" method='POST' action="">
-        <?php if ($jesuis == $row['utilisateur'] OR $jesuisadmin == '1' OR $jesuisrh == '1') :?>
+        <?php if ($jesuis == $row['utilisateur'] OR $jesuisadmin == '1' OR $jesuisrh == '1' OR $jesuissuperadmin == '1') :?>
         <TEXTAREA type='text' maxlength="100" style="resize:none;  float: left; width: 28%; margin-left:51.3%" name="pqupdate" placeholder="Tapez la raison de la modification" required></TEXTAREA>
         <button type='submit' value='jeteup' name='jeteup' class='up'>
             <i class="fas fa-upload"></i> Modifier
@@ -75,7 +75,7 @@ if(isset($_POST['jeteup'])) {
                     <h2 style="text-align:left; font-size: 15px;">Date de création : <?php echo $row['quand'];?></h2>
                     <h2 style="text-align:left; font-size: 15px;">Lieu de création : <?php echo $row['lieu'];?></h2>
 
-                    <?php if ($jesuis == $row['utilisateur'] OR $jesuisadmin == '1' OR $jesuisrh == '1') {?>
+                    <?php if ($jesuis == $row['utilisateur'] OR $jesuisadmin == '1' OR $jesuisrh == '1' OR $jesuissuperadmin == '1') {?>
 
                     <h2 style="text-align:left; font-size: 15px;">Info Victime :</h2>
                     <div class="input-container">
@@ -141,7 +141,7 @@ if(isset($_POST['jeteup'])) {
             <ul class="price">
                 <li class="header">Version Victime / Version Suspect</li>
                 <li>
-                <?php if ($jesuis == $row['utilisateur'] OR $jesuisadmin == '1' OR $jesuisrh == '1') {?>
+                <?php if ($jesuis == $row['utilisateur'] OR $jesuisadmin == '1' OR $jesuisrh == '1' OR $jesuissuperadmin == '1') {?>
                     <h2 style="text-align:left; font-size: 15px;">Version de la Victime :</h2>
                     <TEXTAREA style="resize:none; width:100%; height:30.3%" name="vers_victime"><?php echo $row['vers_victime'];?></TEXTAREA>
                     <h2 style="text-align:left; font-size: 15px;">Version du suspect :</h2>
