@@ -48,8 +48,8 @@ if( isset( $_POST['add_avis'] ) ) {
 if( isset( $_POST['delete'] ) ) {
     $id = $_POST['id'];
     $nom_crim = $_POST['nom_crim'];
-    $sql = mysqli_query($con, "DELETE FROM avis_de_recherche WHERE id = $id ");
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A suprimer ($nom_crim) des personnes rechercher !', '$now')" );
+    $delete = mysqli_query($con, "DELETE FROM avis_de_recherche WHERE id = $id ");
+    $delete_log = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A suprimer ($nom_crim) des personnes rechercher !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
@@ -72,7 +72,6 @@ if( isset( $_POST['delete'] ) ) {
             <span class="close">&times;</span>
             <form method="POST">
                 <h1>Ajouter une personne</h1>
-                <?php if($message!="") { echo $message; } ?><br>
         
                 <div class="input-container">
                     <i class="far fa-calendar-alt icon" style="font-size: 18;"></i>
@@ -169,7 +168,7 @@ window.onclick = function(event) {
                     <td>
                         <center>
                             <form method = "POST">
-                                <?php if ($jesuis == $row['utilisateur'] OR $jesuisadmin == '1' OR $jesuisrh == '1') :?>
+                                <?php if ($jesuis == $row['utilisateur'] OR $jesuisadmin == '1' OR $jesuissuperadmin == '1' OR $jesuisrh == '1') :?>
                                 <button type='submit' value='delete' name='delete' class='delete'>
                                     <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
                                     <input type='hidden' name='nom_crim' value=<?php echo $row['nom_crim']; ?>>

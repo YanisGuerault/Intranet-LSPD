@@ -8,10 +8,11 @@ CREATE TABLE compte_lspd (
     matricule int(11) DEFAULT NULL,
     rh int(11) DEFAULT NULL,
     isadmin int(11) DEFAULT NULL,
+    issuperadmin int(11) DEFAULT NULL,
     PRIMARY KEY (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO compte_lspd VALUES (1, 'Bollin0', '7e2feac95dcd7d1df803345e197369af4b156e4e7a95fcb2955bdbbb3a11afd8bb9d35931bf15511370b18143e38b01b903f55c5ecbded4af99934602fcdf38c', 15, 24, 0, 1);
+INSERT INTO compte_lspd VALUES (1, 'Bollin0', '7e2feac95dcd7d1df803345e197369af4b156e4e7a95fcb2955bdbbb3a11afd8bb9d35931bf15511370b18143e38b01b903f55c5ecbded4af99934602fcdf38c', 15, 24, 0, 0, 1);
 
 CREATE TABLE log_panel (
   id int(11) NOT NULL AUTO_INCREMENT,

@@ -60,6 +60,7 @@ if( isset( $_POST['add_plainte'] ) ) {
 if( isset( $_POST['delete_plainte'] ) ) { 
     $id_plainte = $_POST['id_plainte'];
     $delete = mysqli_query($con, "DELETE FROM plainte WHERE id = $id_plainte ");
+    $delete_log = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A supprimer la Plainte ($id_plainte) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
@@ -84,7 +85,6 @@ if( isset( $_POST['delete_plainte'] ) ) {
             <span class="close">&times;</span>
             <form method="POST">
                 <h1>Ajouter une Plainte</h1>
-                <?php if($message!="") { echo $message; } ?><br>
         
                 <div class="input-container">
                     <i class="far fa-calendar-alt icon" style="font-size: 18;"></i>
@@ -195,7 +195,7 @@ window.onclick = function(event) {
                         <center>
                         <form method='POST'>
                             <a href="plainte.php?id=<?php echo $row['id']; ?>" class='edit'><i class="fas fa-eye"></i></a>
-                            <?php if ($jesuisadmin == '1') :?>
+                            <?php if ($jesuisadmin == '1' OR $jesuissuperadmin == '1') :?>
                             <button type='submit' value='delete_plainte' name='delete_plainte' class='del'>
                                 <input type='hidden' name='id_plainte' value=<?php echo $row['id']; ?>>
                                 <i class='fas fa-trash-alt'></i>

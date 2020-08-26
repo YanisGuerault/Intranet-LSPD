@@ -64,7 +64,7 @@ if(isset($_POST['maj_casier'])) {
         <button class="edit" style="width:15%;  margin-left:68.3%; font-size: 15px" name ="maj_casier">
             <i class="fas fa-upload" style="font-size: 20px;"></i> MAJ la pièce d'identité
         </button>
-        <?php if ($jesuisadmin == '1') :?>
+        <?php if ($jesuisadmin == '1' OR $jesuissuperadmin == '1') :?>
         <button class="del" style="width:15%; font-size: 15px" name ="delete_casier">
             <i class="fas fa-trash-alt" style="font-size: 20px;"></i> Suprimer le casier
         </button>
@@ -116,7 +116,7 @@ if(isset($_POST['maj_casier'])) {
                                 <td>
                                     <center><b><i class="fas fa-info"></i> | Infraction </b></center>
                                 </td>
-                                <?php if ($jesuisadmin == '1' OR $jesuisrh == '1') :?>
+                                <?php if ($jesuisadmin == '1' OR $jesuisrh == '1' OR $jesuissuperadmin == '1') :?>
                                 <td>
                                     <center><b><i class='fas fa-user-edit'></i> | Action</b></center>
                                 </td>
@@ -133,7 +133,7 @@ if(isset($_POST['maj_casier'])) {
                                 <td>
                                     <center><?php echo $data['infra'];?></center>
                                 </td>
-                                <?php if ($jesuisadmin == '1' OR $jesuisrh == '1') :?>
+                                <?php if ($jesuisadmin == '1' OR $jesuisrh == '1' OR $jesuissuperadmin == '1') :?>
                                 <td>
                                     <center>
                                         <form method='POST'>

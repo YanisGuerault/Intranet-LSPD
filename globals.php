@@ -17,6 +17,7 @@ $monniveau = $_SESSION['grade'];
 $monmatricule = $_SESSION['matricule'];
 $jesuisrh = $_SESSION['rh'];
 $jesuisadmin = $_SESSION['isadmin'];
+$jesuissuperadmin = $_SESSION['issuperadmin'];
 
 $level = "";
 
