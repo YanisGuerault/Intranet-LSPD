@@ -150,6 +150,24 @@ input[type=submit]:hover {
     font-family: 'Lato', sans-serif;
 }
 
+.submit {
+    background-color: #53af57;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: 0;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 40%;
+    font-family: 'Lato', sans-serif;
+}
+.submit:hover {
+    background-color: white;
+    color: #53af57;
+    border: 1px solid #ddd;
+    font-family: 'Lato', sans-serif;
+}
+
 p {
     color:green;
 }

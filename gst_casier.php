@@ -31,21 +31,16 @@ $(document).ready(function(){
 
 <?php 
 if( isset( $_POST['add_cassier'] ) ) {
-    if(isset($_POST['lieu']))      $lieu=addslashes($_POST['lieu']);
-    else      $lieu='';
-    if(isset($_POST['nom_crim']))      $nom_crim=addslashes($_POST['nom_crim']);
-    else      $nom_crim='';
-    if(isset($_POST['sexe']))      $sexe=addslashes($_POST['sexe']);
-    else      $sexe='';
-    if(isset($_POST['taille']))      $taille=addslashes($_POST['taille']);
-    else      $taille='';
-    if(isset($_POST['date_de_naissance']))      $date_de_naissance=addslashes($_POST['date_de_naissance']);
-    else      $date_de_naissance='';
-    if(isset($_POST['piece_id']))      $piece_id=addslashes($_POST['piece_id']);
-    else      $piece_id='';
+    $lieu = stringFormat($_POST['lieu']);
+    $nom_crim = stringFormat($_POST['nom_crim']);
+    $sexe = stringFormat($_POST['sexe']);
+    $taille = stringFormat($_POST['taille']);
+    $date_de_naissance = stringFormat($_POST['date_de_naissance']);
+    $piece_id = stringFormat($_POST['piece_id']);
+    $tel = stringFormat($_POST['tel']);
 
-    $sql = mysqli_query ($con, "INSERT INTO casier (quand, utilisateur, lieu, nom_crim, date_de_naissance, sexe, taille, piece_id)  VALUES('$now','$moi','$lieu','$nom_crim','$date_de_naissance','$sexe','$taille','$piece_id')" );
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A ajouter un casier a ($nom_crim) !', '$now')" );
+    $sql = mysqli_query ($con, "INSERT INTO casier (quand, utilisateur, lieu, num_tel, nom_crim, date_de_naissance, sexe, taille, piece_id)  VALUES('$now','$moi','$lieu','$tel','$nom_crim','$date_de_naissance','$sexe','$taille','$piece_id')" );
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A ajouter un casier a ($nom_crim) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
@@ -97,6 +92,8 @@ if( isset( $_POST['add_cassier'] ) ) {
                     <input class="input-field" type="text" placeholder="Entrer la taille du criminel" name="taille" maxlength="3" required>
                     <i class="fas fa-birthday-cake icon" style="font-size: 18;"></i>
                     <input class="input-field" type="text" placeholder="Entrer la date de naissance du criminel" name="date_de_naissance" maxlength="49" required>
+                    <i class="fas fa-phone icon" style="font-size: 18;"></i>
+                    <input class="input-field" type="text" placeholder="Entrer le numéro de téléphone" name="tel" maxlength="10" required>
                 </div>
 
                 <h2 style="text-align:left; font-size: 15px;">Pièce d'identité :</h2>

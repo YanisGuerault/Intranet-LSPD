@@ -80,7 +80,7 @@ if( isset( $_POST['downgrade'] ) ) {
     $leveluser = $_POST['grade'];
     $utilisateur = $_POST['utilisateur'];
     $sql = mysqli_query($con, "UPDATE compte_lspd SET grade = ' ". ($leveluser - 1) ." ' WHERE id = $id ");
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A retrograder ($utilisateur) !', '$now')" );
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A retrograder ($utilisateur) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
@@ -88,7 +88,7 @@ if( isset( $_POST['delete'] ) ) {
     $id = $_POST['id'];
     $utilisateur = $_POST['utilisateur'];
     $sql = mysqli_query($con, "DELETE FROM compte_lspd WHERE id = $id ");
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A supprimer ($utilisateur) !', '$now')" );
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A supprimer ($utilisateur) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }

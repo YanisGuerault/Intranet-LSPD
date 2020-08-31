@@ -51,11 +51,13 @@ $(document).ready(function(){
                 </th>
             </tr>
         </thead>
-        <?php while( $row = mysqli_fetch_array($resultat) ) :?>
+        <?php while( $row = mysqli_fetch_array($resultat) ) :
+            $row2 = get_lspd_account_info($row['utilisateur']);
+            ?>
         <tbody id="myTable">
             <tr>
                 <td>
-                    <center><?php echo $row['utilisateur'];?></center>
+                    <center><?php echo $row2['utilisateur'];?></center>
                 </td>
                 <td>
                     <?php echo $row['historique'];?>

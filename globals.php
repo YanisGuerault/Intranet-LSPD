@@ -1,6 +1,9 @@
 <?php 
 
-session_start(); 
+session_start([
+    'cookie_lifetime' => 86400,
+    'read_and_close'  => true,
+]);
 
 ?>
 
@@ -36,5 +39,34 @@ else if ($monniveau  == '12') { $level = 'Capitaine en Chef'; }
 else if ($monniveau  == '13') { $level = 'Commandant Adjoint'; }
 else if ($monniveau  == '14') { $level = 'Commandant'; }
 else if ($monniveau  == '15') { $level = 'Staff'; }
+
+function stringFormat($string)
+{
+    if(isset($string)) {
+        return addslashes($string);
+    } else {
+        return '';
+    }
+}
+
+function get_grade($niveau)
+{
+    if 		($niveau  == '1') { return 'Cadet'; }
+    else if ($niveau  == '2') { return 'Officier I'; }
+    else if ($niveau  == '3') { return 'Officier II'; }
+    else if ($niveau  == '4') { return 'Officier III'; }
+    else if ($niveau  == '5') { return 'Sergent I'; }
+    else if ($niveau  == '6') { return 'Sergent II'; }
+    else if ($niveau  == '7') { return 'Sergent Chef'; }
+    else if ($niveau  == '8') { return 'Lieutenant I'; }
+    else if ($niveau  == '9') { return 'Lieutenant II'; }
+    else if ($niveau  == '10') { return 'Lieutenant en Chef'; }
+    else if ($niveau  == '11') { return 'Capitaine'; }
+    else if ($niveau  == '12') { return 'Capitaine en Chef'; }
+    else if ($niveau  == '13') { return 'Commandant Adjoint'; }
+    else if ($niveau  == '14') { return 'Commandant'; }
+    else if ($niveau  == '15') { return 'Staff'; }
+    return 'Aucun grade';
+}
 
 ?>

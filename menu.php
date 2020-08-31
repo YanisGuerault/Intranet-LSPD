@@ -16,38 +16,38 @@
 		<!----------si tout les acces --------------->
 
 		<?php if ($jesuisrh == '1' && $jesuisadmin == '1' && $jesuissuperadmin == '1' && $monniveau >= '2') { ?>
-			<nav class="links" style="--items: 9;">
+			<nav class="links" style="--items: 10;">
 		<?php } ?>
 
 		<!----------si deux acces --------------->
 
 		<?php if ($jesuisrh == '1'  && $jesuisadmin == '1' && $jesuissuperadmin == '0' && $monniveau >= '2') { ?>
-			<nav class="links" style="--items: 9;">
+			<nav class="links" style="--items: 10;">
 		<?php } ?>
 		<?php if ($jesuisrh == '1'  && $jesuisadmin == '0' && $jesuissuperadmin == '1' && $monniveau >= '2') { ?>
-			<nav class="links" style="--items: 9;">
+			<nav class="links" style="--items: 10;">
 		<?php } ?>
 		<?php if ($jesuisrh == '0'  && $jesuisadmin == '1' && $jesuissuperadmin == '1' && $monniveau >= '2') { ?>
-			<nav class="links" style="--items: 9;">
+			<nav class="links" style="--items: 10;">
 		<?php } ?>
 
 
 		<!----------si seulement un acces --------------->
 
 		<?php if ($jesuisrh == '0' && $jesuisadmin == '0' && $jesuissuperadmin == '1' && $monniveau >= '2') { ?>
-			<nav class="links" style="--items: 9;">
+			<nav class="links" style="--items: 10;">
 		<?php } ?>
 		<?php if ($jesuisrh == '1' && $jesuisadmin == '0' && $jesuissuperadmin == '0' && $monniveau >= '2') { ?>
-			<nav class="links" style="--items: 9;">
+			<nav class="links" style="--items: 10;">
 		<?php } ?>
 		<?php if ($jesuisrh == '0' && $jesuisadmin == '1' && $jesuissuperadmin == '0' && $monniveau >= '2') { ?>
-			<nav class="links" style="--items: 9;">
+			<nav class="links" style="--items: 10;">
 		<?php } ?>
 
 		<!----------si simple utilisateur ---------------->
 
 		<?php if ($jesuisrh == '0' && $jesuisadmin == '0' && $jesuissuperadmin == '0' && $monniveau >= '2') { ?>
-			<nav class="links" style="--items: 7;">
+			<nav class="links" style="--items: 8;">
 		<?php } ?>
 		<?php if ($jesuisrh == '0' && $jesuisadmin == '0' && $jesuissuperadmin == '0' && $monniveau == '1') { ?>
 			<nav class="links" style="--items: 3;">
@@ -60,6 +60,7 @@
 			<a href="gst_plainte.php"><i class="fas fa-folder-open"></i> Plainte</a>
 			<a href="gst_casier.php"><i class="fas fa-archive"></i> Casier Judiciaire</a>
 			<a href="gst_avis_de_recherche.php"><i class="fas fa-thumbtack"></i> Personnes Recherché</a>
+            <a href="gst_bracelet.php"><i class="fas fa-link"></i></i> Bracelet</a>
 		<?php endif; ?>
 
 		<?php if ($jesuisrh == '1' OR $jesuisadmin == '1' OR $jesuissuperadmin == '1') : ?>

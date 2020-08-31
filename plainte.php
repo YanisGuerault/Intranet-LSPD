@@ -12,6 +12,8 @@ $query = "SELECT * FROM plainte WHERE id = $id " ;
 $result = mysqli_query($con, $query);
 $row = mysqli_fetch_assoc($result);
 
+$row2 = get_lspd_account_info($row["utilisateur"]);
+
 ?>
 
 <?php
@@ -38,7 +40,7 @@ if(isset($_POST['jeteup'])) {
     $sql7 =  mysqli_query($con, "UPDATE plainte SET des_info_suspect = '$des_info_suspect', preuve = '$preuve' WHERE id = $id");
     $sql7 =  mysqli_query($con, "UPDATE plainte SET vers_victime = '$vers_victime', vers_suspect = '$vers_suspect' WHERE id = $id");
     $sql8 =  mysqli_query($con, "UPDATE plainte SET etat = '$etat' WHERE id = $id");
-    $sql9 =  mysqli_query($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'Plainte ($id) Modifier ($pqupdate)', '$now')" );
+    $sql9 =  mysqli_query($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'Plainte ($id) Modifier ($pqupdate)', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
@@ -70,8 +72,8 @@ if(isset($_POST['jeteup'])) {
                 <li>
                     <h2 style="text-align:left; font-size: 15px;">Rapport : <?php echo $row['id'];?></h2>
                     <h2 style="text-align:left; font-size: 15px;">Créateur : <?php echo $row['utilisateur'];?></h2>
-                    <h2 style="text-align:left; font-size: 15px;">Grade : <?php echo $row['grade'];?></h2>
-                    <h2 style="text-align:left; font-size: 15px;">Matricule : <?php echo $row['matri'];?></h2>
+                    <h2 style="text-align:left; font-size: 15px;">Grade : <?php echo get_grade($row2['grade']);?></h2>
+                    <h2 style="text-align:left; font-size: 15px;">Matricule : <?php echo $row2['matricule'];?></h2>
                     <h2 style="text-align:left; font-size: 15px;">Date de création : <?php echo $row['quand'];?></h2>
                     <h2 style="text-align:left; font-size: 15px;">Lieu de création : <?php echo $row['lieu'];?></h2>
 

@@ -1,6 +1,9 @@
 <?php
 
-session_start();
+session_start([
+    'cookie_lifetime' => 86400,
+    'read_and_close'  => true,
+]);
 unset($_SESSION['id']);
 unset($_SESSION['utilisateur']);
 unset($_SESSION['motdepasse']);

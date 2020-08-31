@@ -50,7 +50,7 @@ if( isset( $_POST['add_plainte'] ) ) {
     $sql = mysqli_query ($con, 
     "INSERT INTO plainte (quand, lieu, utilisateur, victime, tel_victime, suspect, tel_suspect, des_info_suspect, vers_victime, vers_suspect, preuve, etat, signa) 
     VALUES('$now','$lieu','$moi','$victime','$tel_victime','$suspect','$tel_suspect','$des_info_suspect', '$vers_victime','','$preuve','1','$victime & $jesuis')" );
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A ajouter une Plainte !', '$now')" );
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A ajouter une Plainte !', '$now')" );
     $message = "<h3><p>La plainte à bien été ajouter !</p></h3>";
     header("Refresh: $delay;"); 
     mysql_close();
@@ -60,7 +60,7 @@ if( isset( $_POST['add_plainte'] ) ) {
 if( isset( $_POST['delete_plainte'] ) ) { 
     $id_plainte = $_POST['id_plainte'];
     $delete = mysqli_query($con, "DELETE FROM plainte WHERE id = $id_plainte ");
-    $delete_log = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A supprimer la Plainte ($id_plainte) !', '$now')" );
+    $delete_log = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A supprimer la Plainte ($id_plainte) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }

@@ -2,7 +2,10 @@
 
 <?php
 
-session_start();
+session_start([
+    'cookie_lifetime' => 86400,
+    'read_and_close'  => true,
+]);
 
 $message = "";
 
@@ -29,12 +32,23 @@ if (count($_POST) > 0)
     else {
         $message = "<center><p>Identifiant Incorrect !</p></center>";
     }
+
+    $con = '<script>';
+    $con .='console.log("from PHP :'. $_POST['utilisateur'] .'")';
+    $con .= '</script>';
+
+    echo $con;
 }
 
 if(isset($_SESSION['id'])) {
-    header("Location: index.php");
+    header("Location: ./index.php");
 }
 
+$con = '<script>';
+$con .='console.log("from PHP :'. $_SESSION['id'] .'")';
+$con .= '</script>';
+
+echo $con;
 ?>
 
 <html lang="fr">
@@ -81,7 +95,7 @@ function show_mdp() {
     </div>
     <br> <br> <br> <br> <br> <br> <br> <br> <br>
     <center>
-        <h1>Réaliser par <i>@Bollin0</i></h1>
+        <h1>Réaliser par <i>@Bollin0</i> & <i>Yanis Forley</i></h1>
     </center>
 </body>
 </html>

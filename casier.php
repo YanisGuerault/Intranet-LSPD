@@ -9,10 +9,7 @@ $query = "SELECT * FROM casier WHERE id = '$id' " ;
 $result = mysqli_query($con, $query);
 $row = mysqli_fetch_assoc($result);
 
-$idu = $row["utilisateur"];
-$query2 = "SELECT * FROM compte_lspd WHERE id = '$idu' " ;
-$result2 = mysqli_query($con, $query2);
-$row2 = mysqli_fetch_assoc($result2);
+$row2 = get_lspd_account_info($row["utilisateur"]);
 
 $nom_crim = $row['nom_crim'];
 
@@ -22,8 +19,7 @@ $resultat = $con->query($query1);
 ?>
 <?php 
 if( isset( $_POST['add_infraction'] ) ) {
-    if(isset($_POST['infraction']))      $infraction=addslashes($_POST['infraction']);
-    else      $infraction='';
+    $infraction=stringFormat($_POST['infraction']);
     $sql = mysqli_query ($con, "INSERT INTO infraction (casier, utilisateur, quand, infra)  VALUES('$id','$moi','$now','$infraction')" );
     $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A ajouter une infraction a ($nom_crim) !', '$now')" );
     header("Refresh: $delay;"); 
@@ -82,7 +78,7 @@ if(isset($_POST['maj_casier'])) {
                 <li>
                     <h2 style="text-align:left; font-size: 15px;">Casier : <?php echo $row['id'];?></h2>
                     <h2 style="text-align:left; font-size: 15px;">Créateur : <?php echo $row2['utilisateur'];?></h2>
-                    <h2 style="text-align:left; font-size: 15px;">Grade : <?php echo $row2['grade'];?></h2>
+                    <h2 style="text-align:left; font-size: 15px;">Grade : <?php echo get_grade($row2['grade']);?></h2>
                     <h2 style="text-align:left; font-size: 15px;">Matricule : <?php echo $row2['matricule'];?></h2>
                     <h2 style="text-align:left; font-size: 15px;">Date de création : <?php echo $row['quand'];?></h2>
                     <h2 style="text-align:left; font-size: 15px;">Lieu de création : <?php echo $row['lieu'];?></h2>
@@ -95,6 +91,7 @@ if(isset($_POST['maj_casier'])) {
                     <h2 style="text-align:left; font-size: 15px;">Date de naissance : <?php echo $row['date_de_naissance'];?></h2>
                     <h2 style="text-align:left; font-size: 15px;">Sexe : <?php if($row['sexe'] == "m") { echo "Homme"; } else { echo "Femme"; }?></h2>
                     <h2 style="text-align:left; font-size: 15px;">Taille : <?php echo $row['taille'];?> cm</h2>
+                    <h2 style="text-align:left; font-size: 15px;">Téléphone : <?php echo $row['num_tel'];?></h2>
                     <div class="input-container">
                         <i class="fas fa-id-card icon"></i>
                         <input type="text" name="piece_id" value="<?php echo $row['piece_id'];?>" >
