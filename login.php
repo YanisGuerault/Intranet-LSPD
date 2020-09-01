@@ -32,23 +32,11 @@ if (count($_POST) > 0)
     else {
         $message = "<center><p>Identifiant Incorrect !</p></center>";
     }
-
-    $con = '<script>';
-    $con .='console.log("from PHP :'. $_POST['utilisateur'] .'")';
-    $con .= '</script>';
-
-    echo $con;
 }
 
 if(isset($_SESSION['id'])) {
     header("Location: ./index.php");
 }
-
-$con = '<script>';
-$con .='console.log("from PHP :'. $_SESSION['id'] .'")';
-$con .= '</script>';
-
-echo $con;
 ?>
 
 <html lang="fr">

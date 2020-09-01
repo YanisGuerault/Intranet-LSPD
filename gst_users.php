@@ -18,7 +18,7 @@ if( isset( $_POST['add_user'] ) ) {
     else      $matricule='';
     $motdepasse = hash('sha512', $_POST['motdepasse']);
     $sql = mysqli_query ($con, "INSERT INTO compte_lspd (utilisateur, motdepasse, grade, matricule, rh, isadmin, issuperadmin) VALUES('$utilisateur','$motdepasse','1','$matricule','0','0','0')" ); 
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A ajouter a la LSPD ($utilisateur) !', '$now')" );
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A ajouter a la LSPD ($utilisateur) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
@@ -28,7 +28,7 @@ if( isset( $_POST['addadmin'] ) ) {
     $id = $_POST['id'];
     $utilisateur = $_POST['utilisateur'];
     $sql = mysqli_query($con, "UPDATE compte_lspd SET isadmin = '1' WHERE id = $id ");
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A ajouter au admin ($utilisateur) !', '$now')" );
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A ajouter au admin ($utilisateur) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
@@ -36,7 +36,7 @@ if( isset( $_POST['deladmin'] ) ) {
     $id = $_POST['id'];
     $utilisateur = $_POST['utilisateur'];
     $sql = mysqli_query($con, "UPDATE compte_lspd SET isadmin = '0' WHERE id = $id ");
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A retirer des admin ($utilisateur) !', '$now')" );
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A retirer des admin ($utilisateur) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
@@ -44,7 +44,7 @@ if( isset( $_POST['addrh'] ) ) {
     $id = $_POST['id'];
     $utilisateur = $_POST['utilisateur'];
     $sql = mysqli_query($con, "UPDATE compte_lspd SET rh = '1' WHERE id = $id ");
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A ajouter au RH ($utilisateur) !', '$now')" );
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A ajouter au RH ($utilisateur) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
@@ -52,7 +52,7 @@ if( isset( $_POST['delrh'] ) ) {
     $id = $_POST['id'];
     $utilisateur = $_POST['utilisateur'];
     $sql = mysqli_query($con, "UPDATE compte_lspd SET rh = '0' WHERE id = $id ");
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A retirer des RH ($utilisateur) !', '$now')" );
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A retirer des RH ($utilisateur) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
@@ -60,7 +60,7 @@ if( isset( $_POST['rst_pass'] ) ) {
     $id = $_POST['id'];
     $utilisateur = $_POST['utilisateur'];
     $sql = mysqli_query($con, "UPDATE compte_lspd SET motdepasse = 'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db' WHERE id = $id ");
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A reinitialiser le mot de passe de ($utilisateur) !', '$now')" );
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A reinitialiser le mot de passe de ($utilisateur) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
@@ -71,7 +71,7 @@ if( isset( $_POST['upgrade'] ) ) {
     $leveluser = $_POST['grade'];
     $utilisateur = $_POST['utilisateur'];
     $sql = mysqli_query($con, "UPDATE compte_lspd SET grade = ' ". ($leveluser + 1) ." ' WHERE id = $id ");
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$jesuis', 'A monter en grade ($utilisateur) !', '$now')" );
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A monter en grade ($utilisateur) !', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }

@@ -36,7 +36,7 @@ if( isset( $_POST['add_bracelet'] ) ) {
     $date_fin = stringFormat($_POST['date_fin']);
 
     $row18 = get_casier_info($nom_crim);
-    $crim = $row18["$nom_crim"];
+    $crim = $row18["nom_crim"];
 
     $sql = mysqli_query ($con, "INSERT INTO bracelet (date_pose, date_fin_pose, utilisateur, criminel, raison)  VALUES('$now', '$date_fin','$moi','$nom_crim','$pourquoi')" );
     $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A ajouter ($crim) à la liste des bracelets !', '$now')" );
@@ -48,8 +48,12 @@ if( isset( $_POST['add_bracelet'] ) ) {
 if( isset( $_POST['delete'] ) ) {
     $id = $_POST['id'];
     $nom_crim = $_POST['nom_crim'];
+
+    $row18 = get_casier_info($nom_crim);
+    $crim = $row18["nom_crim"];
+
     $sql = mysqli_query($con, "DELETE FROM bracelet WHERE id = $id ");
-    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A suprimer ($nom_crim) des personnes rechercher !', '$now')" );
+    $sql2 = mysqli_query ($con, "INSERT INTO log_panel (utilisateur, historique, quand) VALUES('$moi', 'A suprimer ($crim) de la liste des bracelets!', '$now')" );
     header("Refresh: $delay;"); 
     mysql_close();
 }
@@ -96,10 +100,14 @@ if( isset( $_POST['delete'] ) ) {
                         while( $row2 = mysqli_fetch_array($result) ) :
                             print "<option value=\"{$row2['id']}\"> {$row2['nom_crim']} </option>";
                         endwhile;
+
+                        $date = new DateTime(date("Y-m-d"));
+                        $date->modify('+2 day');
+
                         ?>
                     </datalist>
                     <i class="fas fa-user-alt-slash icon" style="font-size: 18;"></i>
-                    <input type="date" class="input-field custom-select" name="date_fin" id="date_fin" required>
+                    <input type="date" class="input-field custom-select" name="date_fin" id="date_fin"  min="<?php echo date("Y-m-d"); ?>" value="<?php echo $date->format('Y-m-d'); ?>" required>
                 </div>
 
                 <div class="input-container">
@@ -107,7 +115,7 @@ if( isset( $_POST['delete'] ) ) {
                     <input class="input-field" type="text" placeholder="Entrer la raison" name="pourquoi" maxlength="99" required>
                 </div>
 
-                <input class="submit" value="Ajouter" name= "add_bracelet" onclick="valider()">
+                <input type="submit" class="submit" value="Ajouter" name="add_bracelet" onclick="valider()">
             </form>
         </div>
     </div>
@@ -204,7 +212,7 @@ function valider() {
                                 <?php if ($moi == $row['utilisateur'] OR $jesuisadmin == '1' OR $jesuissuperadmin == '1' OR $jesuisrh == '1') :?>
                                 <button type='submit' value='delete' name='delete' class='del'>
                                     <input type='hidden' name='id' value=<?php echo $row['id']; ?>>
-                                    <input type='hidden' name='nom_crim' value=<?php echo $row['id']; ?>>
+                                    <input type='hidden' name='nom_crim' value=<?php echo $row3['id']; ?>>
                                     <i class='fas fa-trash-alt' ></i>
                                 </button>
                                 <?php endif;?>
